@@ -1,0 +1,7 @@
+{
+  "hard_requirements": ["Python", "machine learning", "SQL", "Docker", "AWS|Azure|GCP"],
+  "role_core": ["LLM", "Retrieval-Augmented Generation|RAG", "agent", "fine-tun", "evaluation"],
+  "workflow_verbs": ["deployed", "designed", "built", "optimized|optimised", "production"],
+  "governance_quality": ["monitoring", "testing|pytest", "CI/CD", "hallucination"],
+  "soft_collab": ["stakeholder", "cross-functional", "mentor", "led", "communication"]
+}

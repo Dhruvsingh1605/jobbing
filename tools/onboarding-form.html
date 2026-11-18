@@ -1,0 +1,265 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Job Hunt Onboarding</title>
+<style>
+:root{--bg:#f6f7f9;--card:#fff;--ink:#1b1f24;--mute:#5b6572;--line:#d9dee5;--accent:#2557d6;--accent-ink:#fff;--warn:#b45309;--ok:#157347}
+@media (prefers-color-scheme:dark){:root:not([data-theme=light]){--bg:#14171b;--card:#1c2026;--ink:#e8ebef;--mute:#9aa4b0;--line:#323943;--accent:#6f98ff;--accent-ink:#0b1220;--warn:#f5b361;--ok:#5fd39a}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 system-ui,Segoe UI,Roboto,sans-serif}
+header{position:sticky;top:0;z-index:5;background:var(--card);border-bottom:1px solid var(--line);padding:10px 16px}
+header .row{max-width:860px;margin:auto;display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+header h1{font-size:17px;margin:0;flex:1 1 auto}
+.bar{height:6px;background:var(--line);border-radius:3px;flex:1 1 100%;overflow:hidden}
+.bar i{display:block;height:100%;width:0;background:var(--accent);transition:width .2s}
+main{max-width:860px;margin:0 auto;padding:16px}
+section{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:4px 16px 12px;margin:16px 0}
+section>h2{font-size:16px;margin:14px 0 4px}
+.sub{color:var(--mute);font-size:13px;margin:0 0 6px}
+.q{padding:12px 0;border-top:1px solid var(--line)}
+.q:first-of-type{border-top:0}
+.q>label.t{display:block;font-weight:600;margin-bottom:6px}
+.help{color:var(--mute);font-size:13px;margin:-2px 0 6px}
+input[type=text],textarea,select{width:100%;padding:8px 10px;border:1px solid var(--line);border-radius:7px;background:var(--bg);color:var(--ink);font:inherit}
+textarea{min-height:68px;resize:vertical}
+.opts{display:flex;flex-wrap:wrap;gap:8px}
+.opts label{display:flex;align-items:center;gap:6px;border:1px solid var(--line);border-radius:999px;padding:5px 12px;cursor:pointer;background:var(--bg)}
+.opts label:has(input:checked){border-color:var(--accent);background:color-mix(in srgb,var(--accent) 14%,var(--bg))}
+.other{margin-top:6px}
+table{width:100%;border-collapse:collapse}
+td,th{padding:6px 4px;text-align:left;border-top:1px solid var(--line);vertical-align:middle}
+th{font-size:12px;color:var(--mute);font-weight:600;border-top:0}
+td.sk{font-weight:500;white-space:nowrap;padding-right:10px}
+.sk-opts{display:flex;gap:6px;flex-wrap:wrap}
+.sk-opts label{display:flex;gap:4px;align-items:center;border:1px solid var(--line);border-radius:6px;padding:3px 8px;font-size:13px;background:var(--bg);cursor:pointer}
+.sk-opts label:has(input:checked){border-color:var(--accent);background:color-mix(in srgb,var(--accent) 14%,var(--bg))}
+.flag{color:var(--warn);font-size:12px;font-weight:600}
+button{font:inherit;border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:8px;padding:8px 14px;cursor:pointer}
+button.p{background:var(--accent);color:var(--accent-ink);border-color:var(--accent);font-weight:600}
+.final{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+#msg{color:var(--ok);font-size:13px}
+@media (max-width:600px){td.sk{white-space:normal}}
+</style>
+</head>
+<body>
+<header><div class="row">
+  <h1>Job Hunt Onboarding &middot; Dhruv</h1>
+  <span id="count" class="sub"></span>
+  <button class="p" onclick="saveAll()">Download answers</button>
+  <div class="bar"><i id="pb"></i></div>
+</div></header>
+<main>
+  <p class="sub">Everything stays in this file and your browser. Progress is auto-saved on this computer. Skip anything you want me to decide: leave it blank and I'll mark it TODO or propose a value. When you finish, click <b>Download answers</b> and tell me it's done.</p>
+  <div id="form"></div>
+  <section><div class="final" style="padding-top:12px">
+    <button class="p" onclick="saveAll()">Download answers (JSON)</button>
+    <button onclick="copyAll()">Copy answers to clipboard</button>
+    <button onclick="if(confirm('Clear all answers?')){localStorage.removeItem(KEY);location.reload()}">Reset</button>
+    <span id="msg"></span>
+  </div></section>
+</main>
+<script>
+const KEY='jobhunt-onboarding-v1';
+const YN=['Yes','No'];
+const SK_SUSPECT=['Kubernetes','Kafka','Airflow','DeepSpeed','GGUF/GPTQ','vLLM','AWS SageMaker','GCP BigQuery / Vertex AI','WebRTC','Java','C','Guardrails','OpenCV','TensorFlow','Weights & Biases','Agentic Workflows'];
+const SK_OTHER=['Python','SQL','RAG','GraphRAG','Prompt Engineering','LLM Evaluation (RAGAS)','LangChain','LlamaIndex','Semantic Search / BM25 / Reranking','QLoRA / LoRA / PEFT','bitsandbytes quantization','Mixed-precision training','MLflow','DVC','Docker','GitHub Actions CI/CD','FastAPI','Redis Pub/Sub','asyncio','FAISS','PyTorch','Hugging Face Transformers','Scikit-Learn','AWS (S3, EC2)','MongoDB','PostgreSQL','OCR','Neo4j / Cypher','XGBoost / LSTM','Django'];
+const PLATFORMS=['LinkedIn (Jobs + hiring posts)','Naukri','Instahyre','Hirist','Foundit','YC Work at a Startup','Wellfound / Cutshort','Company career sites (Workday, Greenhouse, Lever...)'];
+
+// type: text | area | radio | check | select | yn
+const S=[
+{t:'A. Resume and experience',q:[
+ {id:'a_resume_path',n:1,l:'Path to your resume PDF',k:'text',ph:'e.g. C:\\Users\\User\\Downloads\\Dhruv_resume.pdf'},
+ {id:'a_tex',n:1,l:'Do you have the .tex source?',k:'radio',o:['Yes, I have the .tex','No, only the PDF']},
+ {id:'a_tex_path',l:'If yes, path to the .tex',k:'text'},
+ {id:'a_exp_figure',n:2,l:'Which experience figure should the resume and forms use?',k:'radio',o:['1.3 years (Recommended)','18+ months (as on current resume)'],other:true,help:'Resume Summary says 18+ months; you told me 1.3 years (about 16 months).'},
+ {id:'a_gfuture_type',n:3,l:'Gfuture Tech (Jan-Apr 2025) was',k:'radio',o:['Full-time','Internship','Contract']},
+ {id:'a_dataviv_type',n:3,l:'Dataviv (Jun-Sep 2025) was',k:'radio',o:['Full-time','Internship','Contract']},
+ {id:'a_ft_exp',n:3,l:'Full-time experience for forms (years)',k:'text',ph:'e.g. 1.3'},
+ {id:'a_incl_intern',n:4,l:'Experience including internships for forms (years)',k:'text',ph:'e.g. 1.3'},
+ {id:'a_llama',n:5,l:'Which Llama 3 model did you use at Dataviv?',k:'radio',o:['Llama 3 8B','Llama 3 70B','Not sure'],other:true},
+ {id:'a_desc_timble',n:6,l:'Timble Technologies: what does it do (one line)?',k:'text'},
+ {id:'a_desc_dataviv',n:6,l:'Dataviv Technologies: what does it do (one line)?',k:'text'},
+ {id:'a_desc_gfuture',n:6,l:'Gfuture Tech: what does it do (one line)?',k:'text'},
+ {id:'a_clients',n:6,l:'Can client names be mentioned?',k:'radio',o:['Never','At most once on a resume','Freely'],other:true},
+ {id:'a_gsm8k',n:7,l:'GSM8K numbers for the Qwen fine-tune (before to after), if you have them',k:'text',ph:'Leave blank to keep the bullet as is'},
+ {id:'a_timble_role',n:8,l:'At Timble, what did you build yourself vs contribute to?',k:'area'},
+ {id:'a_timble_mode',n:8,l:'Work mode at Timble',k:'radio',o:['Onsite','Hybrid','Remote']},
+ {id:'a_lawyer_live',n:9,l:'Is LawYer deployed or live?',k:'radio',o:['Deployed / live','Demo only','Local only']},
+ {id:'a_lawyer_repo',n:9,l:'LawYer repo or demo link',k:'text'}
+]},
+{t:'B. Personal details (for forms)',q:[
+ {id:'b_city',n:10,l:'Current city',k:'text',v:'Gurgaon'},
+ {id:'b_address',n:10,l:'Full postal address',k:'area'},
+ {id:'b_github',n:11,l:'GitHub URL',k:'text'},
+ {id:'b_portfolio',n:11,l:'Portfolio / website (optional)',k:'text'},
+ {id:'b_email2',n:11,l:'Secondary email (optional)',k:'text'},
+ {id:'b_passport',n:12,l:'Do you hold a passport?',k:'radio',o:YN},
+ {id:'b_visa',n:12,l:'Do you need visa sponsorship (India)?',k:'radio',o:['No','Yes']},
+ {id:'b_c10',n:13,l:'Class 10 percentage',k:'text'},
+ {id:'b_c12',n:13,l:'Class 12 percentage',k:'text'},
+ {id:'b_roll',n:13,l:'College roll / enrolment number (only if forms ask)',k:'text'},
+ {id:'b_langs',n:14,l:'Languages you speak',k:'check',o:['English - fluent','Hindi - fluent','English - professional','Hindi - native']},
+ {id:'b_langs_other',l:'Other languages and fluency',k:'text'},
+ {id:'b_awards',n:15,l:'Other awards, publications, patents or certifications',k:'area',ph:'Leave blank if none'},
+ {id:'b_dob_incl',n:16,l:'Include date of birth and gender in forms?',k:'radio',o:['Yes, include both','Only when required','Never / prefer not to say']},
+ {id:'b_dob',l:'Date of birth (DD Month YYYY)',k:'text'},
+ {id:'b_gender',l:'Gender',k:'select',o:['','Male','Female','Other','Prefer not to say']}
+]},
+{t:'C. Skills honesty pass',sub:'Confirmed = hands-on, fine in bullets and answers. Limited = skills line only. Never claim = not used, never appears.',skills:true,q:[
+ {id:'c_closed',n:18,l:'Naming closed-source models (e.g. Gemini)',k:'radio',o:['Say "LLM" instead of the brand','Brand names are fine']},
+ {id:'c_never',n:18,l:'Anything else that must never be mentioned',k:'area'}
+]},
+{t:'D. Compensation',q:[
+ {id:'d_cur',n:19,l:'Current CTC (LPA)',k:'text'},
+ {id:'d_exp',n:19,l:'Expected CTC (LPA)',k:'text'},
+ {id:'d_notice',n:19,l:'Notice period',k:'select',o:['','Immediate','15 days','30 days','45 days','60 days','90 days']},
+ {id:'d_neg',n:19,l:'Notice negotiable?',k:'radio',o:['Yes','No'],other:true},
+ {id:'d_immediate',n:20,l:'What counts as "immediate joiner" for you?',k:'text',ph:'e.g. within 15 days'}
+]},
+{t:'E. Filters',q:[
+ {id:'e_sal_remote',n:21,l:'Minimum salary: remote (LPA)',k:'text'},
+ {id:'e_sal_hybrid',n:21,l:'Minimum salary: hybrid (LPA)',k:'text'},
+ {id:'e_sal_onsite',n:21,l:'Minimum salary: onsite (LPA)',k:'text'},
+ {id:'e_sal_pref',n:21,l:'Preferred salary (LPA)',k:'text'},
+ {id:'e_size',n:22,l:'Minimum company size',k:'radio',o:['No minimum','50+','100+','500+','1000+']},
+ {id:'e_startup',n:22,l:'Funded startups OK even if small?',k:'radio',o:YN},
+ {id:'e_block',n:23,l:'Blocklist (tick all)',k:'check',o:['Timble Technologies (current employer)','Dataviv Technologies','Gfuture Tech','Mass IT-services firms that pay low']},
+ {id:'e_block_other',n:23,l:'Other companies or company types to never apply to',k:'area',ph:'Names, comma separated'},
+ {id:'e_5day',n:24,l:'5-day office OK?',k:'radio',o:YN},
+ {id:'e_shift',n:24,l:'Night / US-hour shifts OK?',k:'radio',o:YN},
+ {id:'e_contract',n:24,l:'Contract roles OK?',k:'radio',o:YN},
+ {id:'e_age',n:25,l:'Maximum post age',k:'radio',o:['3 days','7 days (Recommended)','14 days','30 days']},
+ {id:'e_global',n:25,l:'Global-remote roles OK if they hire in India?',k:'radio',o:YN},
+ {id:'e_senior',n:26,l:'Seniority titles OK (tick all)',k:'check',o:['Intern / Trainee','Junior / Associate','Engineer (no level)','Engineer I / II','Senior','Lead / Staff']},
+ {id:'e_never',n:26,l:'Roles to never apply to',k:'area',ph:'e.g. support, sales, pure backend, non-AI titles'}
+]},
+{t:'F. Platforms and targets',platforms:true,q:[
+ {id:'f_runs',n:28,l:'Applications per run',k:'radio',o:['10','20','30','50'],other:true},
+ {id:'f_follow',n:28,l:'Follow up after how many days of no reply?',k:'radio',o:['2 days','3 days','5 days','7 days']}
+]},
+{t:'G. Standard form answers',q:[
+ {id:'g_reloc',n:29,l:'Willing to relocate to (tick all)',k:'check',o:['Bangalore','Pune','Hyderabad','Mumbai','Delhi NCR','Anywhere in India','No']},
+ {id:'g_hybrid',n:30,l:'Hybrid / onsite / 5-day office OK?',k:'radio',o:['Yes to all','Hybrid and onsite only','Hybrid only','No']},
+ {id:'g_night',n:31,l:'Night or US-hour shifts OK?',k:'radio',o:YN},
+ {id:'g_bg',n:32,l:'Consent to background check?',k:'radio',o:YN},
+ {id:'g_priv',n:33,l:'Consent to data-privacy / processing?',k:'radio',o:YN},
+ {id:'g_ai',n:34,l:'Consent to AI-assisted screening?',k:'radio',o:YN},
+ {id:'g_prev',n:35,l:'Worked at the target company before?',k:'radio',o:['No (default)','Ask me each time']},
+ {id:'g_rel',n:35,l:'Relatives at the target company?',k:'radio',o:['No (default)','Ask me each time']},
+ {id:'g_noncomp',n:35,l:'Bound by a non-compete / non-solicit?',k:'radio',o:YN},
+ {id:'g_gov',n:35,l:'Family in government roles?',k:'radio',o:['No (default)','Ask me each time']},
+ {id:'g_sanct',n:35,l:'National of a sanctioned country?',k:'radio',o:['No','Yes']},
+ {id:'g_pan',n:36,l:'Do you hold a PAN? (the number is never stored)',k:'radio',o:YN},
+ {id:'g_avail',n:37,l:'Interview availability',k:'text',ph:'e.g. weekdays after 6 pm, weekends any time'},
+ {id:'g_reason',n:38,l:'Reason for change (positive framing)',k:'text',ph:'e.g. looking for larger-scale ownership of production AI systems'}
+]},
+{t:'H. Resume',q:[
+ {id:'h_layout',n:39,l:'Layout',k:'radio',o:['Keep my current look (recreate in LaTeX)','Use the pack\'s plain ATS template']},
+ {id:'h_len',n:40,l:'Length',k:'radio',o:['1 page','2 pages']},
+ {id:'h_order',n:40,l:'Section order',k:'text',v:'Summary, Skills, Experience, Project, Education, Certifications'},
+ {id:'h_tailor',n:41,l:'Tailoring level',k:'radio',o:['Tailor for every application','Big companies only','One resume per role family (ML / GenAI / MLOps)']},
+ {id:'h_big',l:'Big companies and MNCs get a JD-tailored resume?',k:'radio',o:YN},
+ {id:'h_style',n:42,l:'Your own style rules',k:'area',ph:'e.g. no client names, font, wording rules'}
+]},
+{t:'I. Connections',q:[
+ {id:'i_profile',n:43,l:'Chrome profile you job-hunt in',k:'text',ph:'e.g. Default, Profile 1, the email on it'},
+ {id:'i_ext',n:43,l:'Claude in Chrome extension installed?',k:'radio',o:['Yes','Not yet','Need help']},
+ {id:'i_gmail',n:43,l:'Will you connect the Gmail connector in claude.ai settings?',k:'radio',o:['Yes','Not yet','Skip email features']},
+ {id:'i_login',n:43,l:'Already logged in to (tick all)',k:'check',o:['LinkedIn','Naukri','Instahyre','Hirist','Foundit','YC Work at a Startup']},
+ {id:'i_note',l:'Anything else I should know?',k:'area'}
+]}
+];
+
+let st={};try{st=JSON.parse(localStorage.getItem(KEY)||'{}')}catch(e){}
+const persist=()=>{try{localStorage.setItem(KEY,JSON.stringify(st))}catch(e){}};
+const esc=s=>String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/"/g,'&quot;');
+const get=(id,d)=>st[id]!==undefined?st[id]:d;
+
+function qHtml(q){
+  const v=get(q.id,q.v||'');
+  let h=`<div class="q" data-id="${q.id}"><label class="t">${q.n?q.n+'. ':''}${esc(q.l)}</label>`;
+  if(q.help)h+=`<div class="help">${esc(q.help)}</div>`;
+  if(q.k==='text')h+=`<input type="text" data-id="${q.id}" value="${esc(v)}" placeholder="${esc(q.ph||'')}">`;
+  else if(q.k==='area')h+=`<textarea data-id="${q.id}" placeholder="${esc(q.ph||'')}">${esc(v)}</textarea>`;
+  else if(q.k==='select')h+=`<select data-id="${q.id}">${q.o.map(o=>`<option ${o===v?'selected':''}>${esc(o)}</option>`).join('')}</select>`;
+  else if(q.k==='radio'){
+    h+=`<div class="opts">${q.o.map(o=>`<label><input type="radio" name="${q.id}" value="${esc(o)}" ${v===o?'checked':''}>${esc(o)}</label>`).join('')}</div>`;
+    if(q.other)h+=`<input class="other" type="text" data-id="${q.id}__other" value="${esc(get(q.id+'__other',''))}" placeholder="Other (write here)">`;
+  } else if(q.k==='check'){
+    const arr=Array.isArray(v)?v:[];
+    h+=`<div class="opts">${q.o.map(o=>`<label><input type="checkbox" data-chk="${q.id}" value="${esc(o)}" ${arr.includes(o)?'checked':''}>${esc(o)}</label>`).join('')}</div>`;
+  }
+  return h+'</div>';
+}
+function skillRows(list,def,suspect){
+  return list.map(s=>{const id='sk::'+s;const v=get(id,def);
+   return `<tr><td class="sk">${esc(s)}${suspect?' <span class="flag">check</span>':''}</td><td><div class="sk-opts">${['Confirmed','Limited','Never claim'].map(o=>`<label><input type="radio" name="${esc(id)}" value="${o}" ${v===o?'checked':''}>${o}</label>`).join('')}</div></td></tr>`}).join('');
+}
+function platRows(){
+  return PLATFORMS.map(p=>{const id='pl::'+p;const v=get(id,'');
+   return `<tr><td class="sk">${esc(p)}</td><td><select data-id="${esc(id)}">${['','Skip',1,2,3,4,5,6,7,8].map(o=>`<option ${String(o)===String(v)?'selected':''}>${o}</option>`).join('')}</select></td><td><input type="text" data-id="${esc(id)}::email" value="${esc(get(id+'::email',''))}" placeholder="Account email (if exists)"></td></tr>`}).join('');
+}
+function render(){
+  document.getElementById('form').innerHTML=S.map(s=>{
+    let h=`<section><h2>${esc(s.t)}</h2>`;
+    if(s.sub)h+=`<p class="sub">${esc(s.sub)}</p>`;
+    if(s.skills){
+      h+=`<div class="q"><label class="t">17. Skills the resume claims</label><div class="help">Flagged ones have no default, so please choose. The rest default to Confirmed, as I said earlier; change any that aren't truly hands-on.</div>
+      <table><tr><th>Skill</th><th>Bucket</th></tr>${skillRows(SK_SUSPECT,'',true)}${skillRows(SK_OTHER,'Confirmed',false)}</table></div>`;
+    }
+    if(s.platforms){
+      h+=`<div class="q"><label class="t">27. Platforms: priority (1 = first) and account email</label><div class="help">Choose Skip for platforms you don't want.</div>
+      <table><tr><th>Platform</th><th>Priority</th><th>Account email</th></tr>${platRows()}</table></div>`;
+    }
+    return h+s.q.map(qHtml).join('')+'</section>';
+  }).join('');
+  progress();
+}
+document.addEventListener('input',e=>{
+  const t=e.target;
+  if(t.matches('input[type=radio]')){st[t.name]=t.value}
+  else if(t.dataset.chk){const id=t.dataset.chk;const set=new Set(st[id]||[]);t.checked?set.add(t.value):set.delete(t.value);st[id]=[...set]}
+  else if(t.dataset.id){st[t.dataset.id]=t.value}
+  persist();progress();
+});
+function allIds(){
+  const ids=[];S.forEach(s=>s.q.forEach(q=>ids.push(q.id)));
+  SK_SUSPECT.forEach(s=>ids.push('sk::'+s));
+  return ids;
+}
+function progress(){
+  const ids=allIds();let done=0;
+  ids.forEach(id=>{const v=st[id];if(Array.isArray(v)?v.length:(v&&String(v).trim()))done++});
+  const pct=Math.round(done/ids.length*100);
+  document.getElementById('pb').style.width=pct+'%';
+  document.getElementById('count').textContent=done+' / '+ids.length+' answered';
+}
+function collect(){
+  const out={_meta:{candidate:'Dhruv Singh (Bhidu)',saved:new Date().toISOString(),version:1}};
+  S.forEach(s=>{out[s.t]={};s.q.forEach(q=>{
+    let v=st[q.id];if(v===undefined&&q.v)v=q.v;
+    const o=st[q.id+'__other'];
+    out[s.t][q.l]=(o?{answer:v||'',other:o}:(v===undefined?'':v));
+  })});
+  out['C. Skills honesty pass']['__skills']={};
+  SK_SUSPECT.forEach(s=>out['C. Skills honesty pass']['__skills'][s]=st['sk::'+s]||'(unanswered)');
+  SK_OTHER.forEach(s=>out['C. Skills honesty pass']['__skills'][s]=st['sk::'+s]||'Confirmed');
+  out['F. Platforms and targets']['__platforms']={};
+  PLATFORMS.forEach(p=>out['F. Platforms and targets']['__platforms'][p]={priority:st['pl::'+p]||'',email:st['pl::'+p+'::email']||''});
+  return out;
+}
+function saveAll(){
+  const blob=new Blob([JSON.stringify(collect(),null,2)],{type:'application/json'});
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='dhruv-onboarding-answers.json';
+  document.body.appendChild(a);a.click();a.remove();
+  document.getElementById('msg').textContent='Downloaded dhruv-onboarding-answers.json (check your Downloads folder).';
+}
+function copyAll(){
+  navigator.clipboard.writeText(JSON.stringify(collect(),null,2)).then(()=>{document.getElementById('msg').textContent='Copied. Paste it into the chat.'},()=>{document.getElementById('msg').textContent='Copy blocked by the browser; use Download instead.'});
+}
+render();
+</script>
+</body>
+</html>
