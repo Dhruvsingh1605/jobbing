@@ -1,0 +1,210 @@
+{
+  "_meta": {
+    "candidate": "Dhruv Singh (Bhidu)",
+    "saved": "2026-11-18T06:46:56.548Z",
+    "version": 1
+  },
+  "A. Resume and experience": {
+    "Path to your resume PDF": "C:\\Users\\User\\Downloads\\Dhruv_resume (1) (1)",
+    "Do you have the .tex source?": "No, only the PDF",
+    "If yes, path to the .tex": "",
+    "Which experience figure should the resume and forms use?": "18+ months (as on current resume)",
+    "Gfuture Tech (Jan-Apr 2025) was": "Internship",
+    "Dataviv (Jun-Sep 2025) was": "Internship",
+    "Full-time experience for forms (years)": "1.4",
+    "Experience including internships for forms (years)": "2.1",
+    "Which Llama 3 model did you use at Dataviv?": "Llama 3 8B",
+    "Timble Technologies: what does it do (one line)?": "It is a Fintech company providing AI Fintech solutions to all the banks and NBFC's",
+    "Dataviv Technologies: what does it do (one line)?": "It is an AI Edtech company in Gurugram",
+    "Gfuture Tech: what does it do (one line)?": "It is a AI and Blockchain comapny",
+    "Can client names be mentioned?": "Freely",
+    "GSM8K numbers for the Qwen fine-tune (before to after), if you have them": "",
+    "At Timble, what did you build yourself vs contribute to?": "Architected a Bank Statement Analyzer processing 10,000+ transactions/day using OCR + NLP pipelines, reducing\nmanual review by 60% and improving credit turnaround by 35%.\n– Built a Neo4j Knowledge Graph engine for batch relationship mapping, executing Cypher queries and XGBoost/LSTM\nensembles to detect AML patterns, round-tripping, and fund trailing across multi-entity statements.\n– Designed Django-based ML serving endpoints with A/B testing for model benchmarking, and optimized AWS data pipelines\nwith Docker containerization to reduce inference latency\n\nI also build a realtime talking voice calling agent for sales and marketing, it ahs creat realtime tool calls and TTS and STT transcriber pipeline.",
+    "Work mode at Timble": "Onsite",
+    "Is LawYer deployed or live?": "Local only",
+    "LawYer repo or demo link": "https://github.com/Dhruvsingh1605/LawYer"
+  },
+  "B. Personal details (for forms)": {
+    "Current city": "Gurgaon",
+    "Full postal address": "879, Chander boys n girls pg, saraswati vihar, new maruti housing colony\ngurugram, haryana, 122002",
+    "GitHub URL": "https://github.com/Dhruvsingh1605?tab=repositories",
+    "Portfolio / website (optional)": "",
+    "Secondary email (optional)": "footballfreez11@gmail.com",
+    "Do you hold a passport?": "Yes",
+    "Do you need visa sponsorship (India)?": "Yes",
+    "Class 10 percentage": "75",
+    "Class 12 percentage": "72.3",
+    "College roll / enrolment number (only if forms ask)": "Parul institute of engineering and technology, Btech CSE",
+    "Languages you speak": [
+      "Hindi - fluent",
+      "English - fluent",
+      "Hindi - native",
+      "English - professional"
+    ],
+    "Other languages and fluency": "",
+    "Other awards, publications, patents or certifications": "Supervised Machine Learning – Coursera (Andrew Ng)\n– Data Analysis with Python – FreeCodeCamp\n– Python (Basic & Intermediate) – HackerRank\n– Problem Solving – HackerRank",
+    "Include date of birth and gender in forms?": "Yes, include both",
+    "Date of birth (DD Month YYYY)": "16/05/2003",
+    "Gender": "Male"
+  },
+  "C. Skills honesty pass": {
+    "Naming closed-source models (e.g. Gemini)": "Brand names are fine",
+    "Anything else that must never be mentioned": "",
+    "__skills": {
+      "Kubernetes": "Confirmed",
+      "Kafka": "Confirmed",
+      "Airflow": "Confirmed",
+      "DeepSpeed": "Confirmed",
+      "GGUF/GPTQ": "Confirmed",
+      "vLLM": "Confirmed",
+      "AWS SageMaker": "Confirmed",
+      "GCP BigQuery / Vertex AI": "Confirmed",
+      "WebRTC": "Confirmed",
+      "Java": "Confirmed",
+      "C": "Confirmed",
+      "Guardrails": "Confirmed",
+      "OpenCV": "Confirmed",
+      "TensorFlow": "Confirmed",
+      "Weights & Biases": "Confirmed",
+      "Agentic Workflows": "Confirmed",
+      "Python": "Confirmed",
+      "SQL": "Confirmed",
+      "RAG": "Confirmed",
+      "GraphRAG": "Confirmed",
+      "Prompt Engineering": "Confirmed",
+      "LLM Evaluation (RAGAS)": "Confirmed",
+      "LangChain": "Confirmed",
+      "LlamaIndex": "Confirmed",
+      "Semantic Search / BM25 / Reranking": "Confirmed",
+      "QLoRA / LoRA / PEFT": "Confirmed",
+      "bitsandbytes quantization": "Confirmed",
+      "Mixed-precision training": "Confirmed",
+      "MLflow": "Confirmed",
+      "DVC": "Confirmed",
+      "Docker": "Confirmed",
+      "GitHub Actions CI/CD": "Confirmed",
+      "FastAPI": "Confirmed",
+      "Redis Pub/Sub": "Confirmed",
+      "asyncio": "Confirmed",
+      "FAISS": "Confirmed",
+      "PyTorch": "Confirmed",
+      "Hugging Face Transformers": "Confirmed",
+      "Scikit-Learn": "Confirmed",
+      "AWS (S3, EC2)": "Confirmed",
+      "MongoDB": "Confirmed",
+      "PostgreSQL": "Confirmed",
+      "OCR": "Confirmed",
+      "Neo4j / Cypher": "Confirmed",
+      "XGBoost / LSTM": "Confirmed",
+      "Django": "Confirmed"
+    }
+  },
+  "D. Compensation": {
+    "Current CTC (LPA)": "800000",
+    "Expected CTC (LPA)": "1200000",
+    "Notice period": "30 days",
+    "Notice negotiable?": "No",
+    "What counts as \"immediate joiner\" for you?": "15 days"
+  },
+  "E. Filters": {
+    "Minimum salary: remote (LPA)": "1200000",
+    "Minimum salary: hybrid (LPA)": "1200000",
+    "Minimum salary: onsite (LPA)": "1200000",
+    "Preferred salary (LPA)": "1200000",
+    "Minimum company size": "No minimum",
+    "Funded startups OK even if small?": "Yes",
+    "Blocklist (tick all)": [
+      "Timble Technologies (current employer)",
+      "Dataviv Technologies",
+      "Gfuture Tech"
+    ],
+    "Other companies or company types to never apply to": "",
+    "5-day office OK?": "Yes",
+    "Night / US-hour shifts OK?": "Yes",
+    "Contract roles OK?": "No",
+    "Maximum post age": "14 days",
+    "Global-remote roles OK if they hire in India?": "Yes",
+    "Seniority titles OK (tick all)": [
+      "Junior / Associate",
+      "Engineer (no level)",
+      "Engineer I / II"
+    ],
+    "Roles to never apply to": ""
+  },
+  "F. Platforms and targets": {
+    "Applications per run": "50",
+    "Follow up after how many days of no reply?": "3 days",
+    "__platforms": {
+      "LinkedIn (Jobs + hiring posts)": {
+        "priority": "1",
+        "email": "dhruvsingh1605@gmail.com"
+      },
+      "Naukri": {
+        "priority": "1",
+        "email": "dhruvsingh1605@gmail.com"
+      },
+      "Instahyre": {
+        "priority": "1",
+        "email": "dhruvsingh1605@gmail.com"
+      },
+      "Hirist": {
+        "priority": "1",
+        "email": "dhruvsingh1605@gmail.com"
+      },
+      "Foundit": {
+        "priority": "1",
+        "email": "dhruvsingh1605@gmail.com"
+      },
+      "YC Work at a Startup": {
+        "priority": "1",
+        "email": "dhruvsingh1605@gmail.com"
+      },
+      "Wellfound / Cutshort": {
+        "priority": "1",
+        "email": "dhruvsingh1605@gmail.com"
+      },
+      "Company career sites (Workday, Greenhouse, Lever...)": {
+        "priority": "1",
+        "email": "dhruvsingh1605@gmail.com"
+      }
+    }
+  },
+  "G. Standard form answers": {
+    "Willing to relocate to (tick all)": [
+      "Bangalore",
+      "Pune",
+      "Hyderabad",
+      "Mumbai",
+      "Delhi NCR",
+      "Anywhere in India"
+    ],
+    "Hybrid / onsite / 5-day office OK?": "Yes to all",
+    "Night or US-hour shifts OK?": "Yes",
+    "Consent to background check?": "Yes",
+    "Consent to data-privacy / processing?": "Yes",
+    "Consent to AI-assisted screening?": "Yes",
+    "Worked at the target company before?": "No (default)",
+    "Relatives at the target company?": "No (default)",
+    "Bound by a non-compete / non-solicit?": "No",
+    "Family in government roles?": "No (default)",
+    "National of a sanctioned country?": "No",
+    "Do you hold a PAN? (the number is never stored)": "Yes",
+    "Interview availability": "anyday",
+    "Reason for change (positive framing)": "looking for a large scale ownership in AI products"
+  },
+  "H. Resume": {
+    "Layout": "Keep my current look (recreate in LaTeX)",
+    "Length": "1 page",
+    "Section order": "Summary, Skills, Experience, Project, Education, Certifications",
+    "Tailoring level": "Tailor for every application",
+    "Big companies and MNCs get a JD-tailored resume?": "Yes",
+    "Your own style rules": ""
+  },
+  "I. Connections": {
+    "Chrome profile you job-hunt in": "default",
+    "Claude in Chrome extension installed?": "Need help",
+    "Will you connect the Gmail connector in claude.ai settings?": "Yes",
+    "Already logged in to (tick all)": "",
+    "Anything else I should know?": ""
+  }
+}

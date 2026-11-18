@@ -1,0 +1,73 @@
+% One-page ATS-friendly resume template. Black & white, blue links.
+% Compile: pdflatex -interaction=nonstopmode resume.tex (run twice)
+\documentclass[letterpaper,10.5pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[margin=0.5in]{geometry}
+\usepackage{enumitem}
+\usepackage{titlesec}
+\usepackage[hidelinks]{hyperref}
+\usepackage{xcolor}
+\usepackage{tabularx}
+\pdfgentounicode=1   % makes text extractable for ATS parsers
+
+\definecolor{linkblue}{RGB}{0,0,200}
+\newcommand{\link}[2]{\href{#1}{\textcolor{linkblue}{#2}}}
+\pagestyle{empty}
+\setlength{\parindent}{0pt}
+\titleformat{\section}{\large\bfseries\uppercase}{}{0pt}{}[\vspace{-4pt}\rule{\linewidth}{0.5pt}]
+\titlespacing*{\section}{0pt}{6pt}{3pt}
+\setlist[itemize]{leftmargin=12pt,itemsep=1pt,topsep=1pt,parsep=0pt}
+
+% \role{Title}{Company — descriptor}{Location}{Dates}
+\newcommand{\role}[4]{\textbf{#1}, #2 \hfill \textit{#4}\\\textit{#3}\vspace{1pt}}
+% \project{Name}{Stack}{Link text}{URL}
+\newcommand{\project}[4]{\textbf{#1} \textbar{} \textit{#2} \hfill \link{#4}{#3}\vspace{1pt}}
+
+\begin{document}
+
+\begin{center}
+  {\LARGE\bfseries FIRSTNAME LASTNAME}\\[2pt]
+  City, Country \textbar{} +00-0000000000 \textbar{}
+  \link{mailto:name@example.com}{name@example.com} \textbar{}
+  \link{https://www.linkedin.com/in/handle}{linkedin.com/in/handle} \textbar{}
+  \link{https://github.com/handle}{github.com/handle}
+\end{center}
+
+\section{Summary}
+Role title with N years building X, Y and Z in production. One line on the strongest result. One line tying skills to the target role.
+
+\section{Experience}
+\role{Job Title}{Company --- one-line descriptor}{City, Country}{Mon YYYY -- Present}
+\begin{itemize}
+  \item Built \textbf{system} using technique/stack, achieving metric for scale/business outcome.
+  \item Designed component doing X; cut latency/cost by N\% across M requests per month.
+  \item Led a team of N engineers delivering Y to Z clients; owned design docs and code review.
+\end{itemize}
+
+\role{Intern Title}{Company --- descriptor}{City (Remote)}{Mon YYYY -- Mon YYYY}
+\begin{itemize}
+  \item Action, technique, metric.
+\end{itemize}
+
+\section{Projects}
+\project{Project Name}{Stack, Stack, Stack}{github}{https://github.com/handle/repo}
+\begin{itemize}
+  \item What it does, the core technique and the headline metric.
+\end{itemize}
+
+\section{Skills}
+\textbf{Languages:} Python, SQL \quad
+\textbf{ML/AI:} PyTorch, scikit-learn \quad
+\textbf{Infra:} Docker, AWS, CI/CD
+
+\section{Education}
+\textbf{B.Tech, Branch}, College Name \hfill \textit{YYYY -- YYYY}\\
+CGPA: X.XX
+
+\section{Achievements}
+\begin{itemize}
+  \item Award or publication with one line of context and a \link{https://example.com}{link}.
+\end{itemize}
+
+\end{document}
